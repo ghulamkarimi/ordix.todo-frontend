@@ -1,0 +1,10 @@
+# .dockerignore (im frontend-Ordner)
+
+node_modules
+dist
+.vscode
+.git
+.gitignore
+npm-debug.log
+Dockerfile
+docker-compose.yml
