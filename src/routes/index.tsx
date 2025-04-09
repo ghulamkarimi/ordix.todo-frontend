@@ -3,6 +3,7 @@ import App from "../App";
 import HomePage from "../pages/HomePage";
 import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
+import PasswordResetPage from "@/pages/PasswordResetPage";
 
  const router = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ import LoginPage from "@/pages/LoginPage";
         {
           path: "/login",
           element: <LoginPage />,
+        },
+        {
+          path: "/reset-password",
+          element: <PasswordResetPage />,
         }
       ],
     }
