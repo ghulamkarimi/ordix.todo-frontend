@@ -48,8 +48,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
-      <h1 className="text-2xl font-semibold mb-4">Registrieren</h1>
+    <div className="flex items-center justify-center min-h-screen ">
+       <div className="bg-gray-100 shadow-lg p-6 rounded-lg w-full  max-w-md">
+      <h1 className="text-2xl font-bold text-center mb-6">Registrieren</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -110,12 +111,28 @@ const RegisterPage = () => {
           <button
           onClick={()=> navigate("/login")}
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition my-2"
           >
             Registrieren
           </button>
         </Form>
       </Formik>
+
+      <div className="flex w-full items-center justify-center">
+            <div className="border border-b-2 w-full border-gray-300" />
+            <h1 className=" mx-1.5 text-3xl font-semibold text-center">
+              oder
+            </h1>
+            <div className="border border-b-2 w-full border-gray-300" />
+          </div>
+      <button
+        className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition my-2"
+        onClick={() => navigate("/login")}
+      >
+        Bereits registriert? Einloggen
+      </button>
+
+    </div>
     </div>
   );
 };
