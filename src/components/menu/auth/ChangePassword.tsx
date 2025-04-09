@@ -55,7 +55,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className 
           })
         ).unwrap();
 
-        NotificationService.success("Passwort erfolgreich geändert ✅");
+        NotificationService.success("Passwort erfolgreich geändert");
         setTimeout(() => navigate("/login"), 1000); // Nach Erfolg zur Login-Seite nach 1 Sekunde
       } catch (error: any) {
         NotificationService.error(error || "Fehler beim Zurücksetzen des Passworts");

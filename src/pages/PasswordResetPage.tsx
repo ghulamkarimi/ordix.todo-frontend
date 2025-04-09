@@ -18,7 +18,7 @@ const PasswordResetPage = () => {
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center transition-all duration-500"
-      style={{ backgroundImage: "url('/homeBackground.jpg')" }}
+   
     >
       <div
         className={`bg-white/90 p-8 rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-500 ${
