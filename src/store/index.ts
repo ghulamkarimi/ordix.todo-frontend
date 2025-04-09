@@ -14,11 +14,21 @@ export const store = configureStore({
         app:appreducer
     }
 })
-
-store.dispatch(getUsersApi())
-store.dispatch(getTasksApi())
-store.dispatch(getListsApi())
 store.dispatch(getCurrentUserApi())
+store.dispatch(getUsersApi())
+
+// Tasks und Lists nur laden, wenn der Benutzer eingeloggt ist
+store.dispatch(getCurrentUserApi()).unwrap().then(() => {
+    console.log("Benutzer eingeloggt, lade Tasks und Lists...");
+    store.dispatch(getTasksApi());
+    store.dispatch(getListsApi());
+}).catch((err: any) => {
+    console.error("Fehler beim Abrufen des aktuellen Benutzers:", err);
+});
+
+// store.dispatch(getTasksApi())
+// store.dispatch(getListsApi())
+
 
 
 export type RootState = ReturnType<typeof store.getState>;

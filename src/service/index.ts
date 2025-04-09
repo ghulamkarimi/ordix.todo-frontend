@@ -7,11 +7,11 @@ const SERVER_URL =
     : 'http://backend:5000/api'; // im Docker-Container
 
 const axiosInstance = axios.create({
-  baseURL: SERVER_URL, // ✅ wird korrekt genutzt
-  withCredentials: true, // ✅ wichtig für session cookie
+  baseURL: SERVER_URL, //  wird korrekt genutzt
+  withCredentials: true, //  wichtig für session cookie
 });
 
-// ✅ KEINE SERVER_URL hier — nur Pfad!
+//  KEINE SERVER_URL hier — nur Pfad!
 export const userRegister = async (user: TUser) => {
   return axiosInstance.post('/auth/register', user);
 };
@@ -35,11 +35,11 @@ export const userLogout = async () => {
 export const getTasks = async () => {
     return axiosInstance.get('/tasks/all')
       .then((res) => {
-        console.log("✅ TASKS:", res.data);
+        console.log(" TASKS:", res.data);
         return res.data; // Nur die Daten zurückgeben
       })
       .catch((err) => {
-        console.error("❌ Axios TASKS ERROR", err);
+        console.error("Axios TASKS ERROR", err);
         throw err;
       });
 };
@@ -48,11 +48,11 @@ export const getTasks = async () => {
 export const getLists = async () => {
   return axiosInstance.get('/lists')
     .then((res) => {
-      console.log("✅ LISTS:", res.data);
+      console.log(" LISTS:", res.data);
       return res.data; // Nur die Daten zurückgeben
     })
     .catch((err) => {
-      console.error("❌ Axios LISTS ERROR", err);
+      console.error(" Axios LISTS ERROR", err);
       throw err;
     });
 };
