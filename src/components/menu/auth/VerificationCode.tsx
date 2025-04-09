@@ -2,47 +2,36 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux"; 
+import { useDispatch } from "react-redux";
 import { NotificationService } from "@/service/NotificationService";
 import { AppDispatch } from "@/store";
 import { verifyResetCodeApi } from "@/feature/userSlice";
 
 interface VerificationCodeFormProps {
-  onNextStep: () => void;
+  onNextStep: (code: string) => void; // Änderung: Code wird übergeben
   email: string;
   className?: string;
 }
 
-const VerificationCode: React.FC<VerificationCodeFormProps> = ({
-  onNextStep,
-  email,
-  className,
-}) => {
+const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, email, className }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
-    initialValues: { verificationCode: "" },
+    initialValues: { code: "" },
     validationSchema: Yup.object({
-      verificationCode: Yup.string()
-        .required("Verifizierungscode ist erforderlich")
-        .matches(/^\d{6}$/, "Der Code muss 6-stellig sein"),
+      code: Yup.string()
+        .required("Code ist erforderlich")
+        .length(6, "Der Code muss 6-stellig sein"),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        await dispatch(
-          verifyResetCodeApi({
-            email,
-            code: values.verificationCode,
-          })
-        ).unwrap();
-        NotificationService.success("Verifizierung erfolgreich!");
-        onNextStep(); // ➡ Zum Schritt 3: Passwort ändern
+        await dispatch(verifyResetCodeApi({ email, code: values.code })).unwrap();
+        NotificationService.success("Code erfolgreich überprüft!");
+        onNextStep(values.code); // Code an PasswordResetPage übergeben
       } catch (error: any) {
-        NotificationService.error(
-          error.message || "Ungültiger Verifizierungscode."
-        );
+        NotificationService.error(error || "Ungültiger Code.");
       } finally {
         setIsSubmitting(false);
       }
@@ -50,41 +39,45 @@ const VerificationCode: React.FC<VerificationCodeFormProps> = ({
   });
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className={`space-y-6 ${className || ""}`}
-    >
-      <h3 className="text-2xl font-extrabold text-center text-gray-800">
-        Verifizierungscode
-      </h3>
+    <form onSubmit={formik.handleSubmit} className={`space-y-6 ${className || ""}`}>
+      <h3 className="text-2xl font-extrabold text-center text-gray-800">Verifizierungscode</h3>
       <p className="text-center text-gray-600 mb-4">
-        Bitte gib den Code ein, den wir an{" "}
-        <span className="font-semibold">{email}</span> gesendet haben.
+        Bitte geben Sie den Code ein, den wir an <span className="font-semibold">{email}</span> gesendet haben.
       </p>
 
-      <input
-        type="text"
-        name="verificationCode"
-        placeholder="6-stelliger Code"
-        className={`w-full px-4 py-3 border rounded-lg text-black focus:outline-none transition-all duration-300 ${
-          formik.touched.verificationCode && formik.errors.verificationCode
-            ? "border-red-500"
-            : "border-gray-300 focus:border-blue-500"
-        }`}
-        value={formik.values.verificationCode}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.touched.verificationCode && formik.errors.verificationCode && (
-        <p className="text-red-500 text-sm">{formik.errors.verificationCode}</p>
-      )}
+      <div className="relative">
+        <input
+          type="text"
+          name="code"
+          placeholder="Verifizierungscode"
+          className={`w-full px-4 py-3 border rounded-lg text-black focus:outline-none transition-all duration-300 ${
+            formik.touched.code && formik.errors.code ? "border-red-500" : "border-gray-300 focus:border-blue-500"
+          }`}
+          value={formik.values.code}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.code && formik.errors.code && (
+          <p className="text-red-500 text-sm absolute left-0 top-full mt-1">{formik.errors.code}</p>
+        )}
+      </div>
 
       <button
         type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold py-3 rounded-lg transition-all duration-300 flex items-center justify-center"
         disabled={isSubmitting}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
       >
-        {isSubmitting ? "Überprüfung läuft..." : "Weiter"}
+        {isSubmitting ? (
+          <span className="flex items-center">
+            <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0h-4a4 4 0 00-8 0H4z" />
+            </svg>
+            Wird überprüft...
+          </span>
+        ) : (
+          "Weiter"
+        )}
       </button>
     </form>
   );

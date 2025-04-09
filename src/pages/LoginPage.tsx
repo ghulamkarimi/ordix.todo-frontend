@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const regexPassword = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+const regexPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.]).{6,}$/;
+
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -26,6 +27,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
+
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       const response = await dispatch(userLoginApi(values)).unwrap();
@@ -38,8 +40,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white shadow-md p-6 rounded-lg w-full max-w-md">
+    <div className="flex items-center justify-center min-h-screen ">
+      <div className="bg-gray-100 shadow-lg p-6 rounded-lg w-full  max-w-md">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
 
         <Formik
@@ -98,6 +100,27 @@ const LoginPage = () => {
             </Form>
           )}
         </Formik>
+
+        <button
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition my-2"
+          onClick={() => navigate("/reset-password")}
+        >
+          Passwort vergessen
+        </button>
+        <div className="flex w-full items-center justify-center">
+            <div className="border border-b-2 w-full border-gray-300" />
+            <h1 className=" mx-1.5 text-3xl font-semibold text-center">
+              oder
+            </h1>
+            <div className="border border-b-2 w-full border-gray-300" />
+          </div>
+        <button
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition my-2"
+          onClick={() => navigate("/register")}
+        >
+          Registrieren
+        </button>
+      
       </div>
     </div>
   );

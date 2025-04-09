@@ -6,28 +6,43 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { NotificationService } from "@/service/NotificationService";
 import { resetPasswordApi } from "@/feature/userSlice";
+import { useNavigate } from "react-router-dom";
 
 interface ChangePasswordProps {
   email: string;
+  code: string; // Code wird als Prop übergeben, nicht mehr als Eingabe
   className?: string;
 }
 
-const ChangePassword: React.FC<ChangePasswordProps> = ({ email, className }) => {
+const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const [showNewPassword, setShowNewPassword] = useState(false); // Für neues Passwort
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Für Passwort-Bestätigung
+  const regexPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.]).{6,}$/;
+
 
   const formik = useFormik({
     initialValues: {
-      code: "", // Verifizierungscode hinzufügen
       new_password: "",
+      confirm_password: "",
     },
     validationSchema: Yup.object({
-      code: Yup.string()
-        .required("Verifizierungscode ist erforderlich")
-        .length(6, "Der Code muss 6-stellig sein"),
       new_password: Yup.string()
         .min(6, "Mindestens 6 Zeichen")
+        .matches(
+          regexPassword,
+          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten"
+        )
         .required("Passwort ist erforderlich"),
+      confirm_password: Yup.string()
+        .oneOf([Yup.ref("new_password"), undefined], "Passwörter müssen übereinstimmen")
+        .matches(
+          regexPassword,
+          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten"
+        )
+        .required("Passwort-Bestätigung ist erforderlich"),
     }),
     onSubmit: async (values) => {
       setIsSubmitting(true);
@@ -35,12 +50,13 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, className }) => 
         await dispatch(
           resetPasswordApi({
             email,
-            code: values.code,
+            code,
             newPassword: values.new_password,
           })
         ).unwrap();
 
         NotificationService.success("Passwort erfolgreich geändert ✅");
+        setTimeout(() => navigate("/login"), 1000); // Nach Erfolg zur Login-Seite nach 1 Sekunde
       } catch (error: any) {
         NotificationService.error(error || "Fehler beim Zurücksetzen des Passworts");
       } finally {
@@ -57,31 +73,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, className }) => 
 
       <div className="relative">
         <input
-          type="text"
-          name="code"
-          placeholder="Verifizierungscode"
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none ${
-            formik.touched.code && formik.errors.code
-              ? "border-red-500"
-              : "border-gray-300 focus:border-blue-500"
-          }`}
-          value={formik.values.code}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.code && formik.errors.code && (
-          <p className="text-red-500 text-sm absolute left-0 top-full mt-1">
-            {formik.errors.code}
-          </p>
-        )}
-      </div>
-
-      <div className="relative">
-        <input
-          type="password"
+          type={showNewPassword ? "text" : "password"} // Dynamischer Typ basierend auf Zustand
           name="new_password"
           placeholder="Neues Passwort"
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none ${
+          className={`w-full px-4 py-3 border rounded-lg focus:outline-none pr-10 ${
             formik.touched.new_password && formik.errors.new_password
               ? "border-red-500"
               : "border-gray-300 focus:border-blue-500"
@@ -90,6 +85,13 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, className }) => 
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        <button
+          type="button"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+          onClick={() => setShowNewPassword(!showNewPassword)}
+        >
+          {showNewPassword ? "Hide" : "Show"}
+        </button>
         {formik.touched.new_password && formik.errors.new_password && (
           <p className="text-red-500 text-sm absolute left-0 top-full mt-1">
             {formik.errors.new_password}
@@ -97,8 +99,36 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, className }) => 
         )}
       </div>
 
+      <div className="relative">
+        <input
+          type={showConfirmPassword ? "text" : "password"} // Dynamischer Typ basierend auf Zustand
+          name="confirm_password"
+          placeholder="Passwort bestätigen"
+          className={`w-full px-4 py-3 border rounded-lg focus:outline-none pr-10 ${
+            formik.touched.confirm_password && formik.errors.confirm_password
+              ? "border-red-500"
+              : "border-gray-300 focus:border-blue-500"
+          }`}
+          value={formik.values.confirm_password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        <button
+          type="button"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+        >
+          {showConfirmPassword ? "Hide" : "Show"}
+        </button>
+        {formik.touched.confirm_password && formik.errors.confirm_password && (
+          <p className="text-red-500 text-sm absolute left-0 top-full mt-1">
+            {formik.errors.confirm_password}
+          </p>
+        )}
+      </div>
+
       <button
-        type="submit"
+        type="submit" // Navigation nur nach erfolgreichem Submit
         className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 flex items-center justify-center"
         disabled={isSubmitting}
       >

@@ -69,18 +69,18 @@ const Sidebar = () => {
                   <ChevronRight className="w-5 h-5 mr-2 text-gray-600" />
                   <span>Anstehend</span>
                 </div>
-                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                {/* <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
                   12
-                </span>
+                </span> */}
               </li>
               <li className="flex justify-between items-center p-2 bg-gray-100 rounded-lg">
                 <div className="flex items-center">
                   <List className="w-5 h-5 mr-2 text-gray-600" />
                   <span>Heute</span>
                 </div>
-                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                {/* <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
                   5
-                </span>
+                </span> */}
               </li>
             </ul>
           </div>
@@ -96,27 +96,27 @@ const Sidebar = () => {
                   <Circle className="w-4 h-4 text-red-400 mr-2" />
                   <span>Persönlich</span>
                 </div>
-                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                {/* <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
                   3
-                </span>
+                </span> */}
               </li>
               <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg">
                 <div className="flex items-center">
                   <Circle className="w-4 h-4 text-blue-200 mr-2" />
                   <span>Arbeit</span>
                 </div>
-                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                {/* <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
                   6
-                </span>
+                </span> */}
               </li>
               <li className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg">
                 <div className="flex items-center">
                   <Circle className="w-4 h-4 text-yellow-200 mr-2" />
                   <span>Liste 1</span>
                 </div>
-                <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                {/* <span className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
                   3
-                </span>
+                </span> */}
               </li>
               <li className="flex items-center p-2 hover:bg-gray-100 rounded-lg">
                 <Plus className="w-5 h-5 mr-2 text-gray-600" />

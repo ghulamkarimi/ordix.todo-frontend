@@ -12,7 +12,8 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const regexPassword = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+  const regexPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.]).{6,}$/;
+
   // Mindestens 6 Zeichen, mindestens 1 Buchstabe und 1 Zahl
 
   const initialValues = {
