@@ -14,7 +14,7 @@ export const store = configureStore({
         app:appreducer
     }
 })
-store.dispatch(getCurrentUserApi())
+
 store.dispatch(getUsersApi())
 
 // Tasks und Lists nur laden, wenn der Benutzer eingeloggt ist

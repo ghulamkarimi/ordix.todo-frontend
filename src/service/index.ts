@@ -1,17 +1,13 @@
 import axios from 'axios';
 import { TUser } from '../interface/index';
 
-const SERVER_URL =
-    import.meta.env.DEV
-        ? 'http://localhost:5000/api' // beim lokalen Dev-Start
-        : 'http://backend:5000/api'; // im Docker-Container
+const SERVER_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 export const axiosInstance = axios.create({
-    baseURL: SERVER_URL, //  wird korrekt genutzt
-    withCredentials: true, //  wichtig für session cookie
+    baseURL: SERVER_URL,
+    withCredentials: true,
 });
 
-//  KEINE SERVER_URL hier — nur Pfad!
 export const userRegister = async (user: TUser) => {
     return axiosInstance.post('/auth/register', user);
 };
@@ -32,7 +28,6 @@ export const userLogout = async () => {
     return axiosInstance.post('/auth/logout');
 };
 
-
 export const requestPasswordReset = async (user: TUser) => {
     return axiosInstance.post("auth/request-reset", user);
 };
@@ -45,16 +40,15 @@ export const resetPassword = async ({ email, code, newPassword }: { email: strin
     return axiosInstance.post("/auth/reset-password", {
         email,
         code,
-        new_password: newPassword, // Backend erwartet "new_password"
+        new_password: newPassword,
     });
 };
-
 
 export const getTasks = async () => {
     return axiosInstance.get('/tasks/all')
         .then((res) => {
             console.log(" TASKS:", res.data);
-            return res.data; // Nur die Daten zurückgeben
+            return res.data;
         })
         .catch((err) => {
             console.error("Axios TASKS ERROR", err);
@@ -62,12 +56,11 @@ export const getTasks = async () => {
         });
 };
 
-
 export const getLists = async () => {
     return axiosInstance.get('/lists')
         .then((res) => {
             console.log(" LISTS:", res.data);
-            return res.data; // Nur die Daten zurückgeben
+            return res.data;
         })
         .catch((err) => {
             console.error(" Axios LISTS ERROR", err);

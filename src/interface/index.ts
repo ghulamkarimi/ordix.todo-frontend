@@ -15,11 +15,13 @@ export interface ITask {
     id: number;
     title: string;
     description: string;
-    status: string;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: string;
+    updated_at: string;
+    due_date: string;
+    is_completed: boolean;
+    list_id: number;
+    user_id: number;
 }
-
 export type TTask = Partial<ITask>
 
 export interface IList {    

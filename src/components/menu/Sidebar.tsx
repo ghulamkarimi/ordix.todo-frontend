@@ -3,9 +3,10 @@ import { toggleSidebar, selectIsSidebarOpen } from '@/feature/appSlice';
 import { AppDispatch, useAppSelector } from '@/store';
 import { Menu, ChevronRight, List, Plus, LogOut, Circle } from 'lucide-react';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { displayTasks } from '@/feature/taskSlice';
 
 const Sidebar = () => {
   const isAuthenticated = useAppSelector(selectedIsAuthenticated);
@@ -13,6 +14,8 @@ const Sidebar = () => {
   const isSidebarOpen = useAppSelector(selectIsSidebarOpen);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const tasks = useSelector(displayTasks);
+     
 
   const handleLogout = async () => {
     try {
@@ -87,9 +90,16 @@ const Sidebar = () => {
                   className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
-                  <div className="flex items-center">
-                    <ChevronRight className="w-5 h-5 mr-2 text-gray-600" />
-                    <span>Anstehend</span>
+                  <div className="flex items-center justify-between w-full">
+                 <div>
+                 <ChevronRight className="w-5 h-5 mr-2 text-gray-600" />
+                 <span>Anstehend</span>
+                 </div>
+                    <div>
+                      <span className="ml-2 text-xs bg-blue-200 text-blue-800 rounded-full px-2 py-1">
+                        {tasks.filter((task) => !task.is_completed).length}
+                      </span>
+                    </div>
                   </div>
                 </li>
                 <li 
