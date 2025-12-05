@@ -32,16 +32,25 @@ export const requestPasswordReset = async (user: TUser) => {
     return axiosInstance.post("auth/request-reset", user);
 };
 
-export const verifyResetCode = async ({ email, code }: { email: string; code: string }) => {
+export const verifyResetCode =
+ async ({ email, code }: { email: string; code: string }) => {
     return axiosInstance.post("/auth/verify-reset-code", { email, code });
 };
 
-export const resetPassword = async ({ email, code, newPassword }: { email: string; code: string; newPassword: string }) => {
-    return axiosInstance.post("/auth/reset-password", {
-        email,
-        code,
-        new_password: newPassword,
-    });
+export const resetPassword = async ({
+  email,
+  code,
+  newPassword,
+}: {
+  email: string;
+  code: string;
+  newPassword: string;
+}) => {
+  return axiosInstance.post("/auth/reset-password", {
+    email,
+    code,
+    new_password: newPassword,
+  });
 };
 
 export const getTasks = async () => {
