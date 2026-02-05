@@ -13,7 +13,11 @@ interface VerificationCodeFormProps {
   className?: string;
 }
 
-const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, email, className }) => {
+const VerificationCode: React.FC<VerificationCodeFormProps> = ({
+  onNextStep,
+  email,
+  className,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,7 +31,9 @@ const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, ema
     onSubmit: async (values) => {
       setIsSubmitting(true);
       try {
-        await dispatch(verifyResetCodeApi({ email, code: values.code })).unwrap();
+        await dispatch(
+          verifyResetCodeApi({ email, code: values.code }),
+        ).unwrap();
         NotificationService.success("Code erfolgreich überprüft!");
         onNextStep(values.code); // Code an PasswordResetPage übergeben
       } catch (error: any) {
@@ -39,10 +45,16 @@ const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, ema
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={`space-y-6 ${className || ""}`}>
-      <h3 className="text-2xl font-extrabold text-center text-gray-800">Verifizierungscode</h3>
+    <form
+      onSubmit={formik.handleSubmit}
+      className={`space-y-6 ${className || ""}`}
+    >
+      <h3 className="text-2xl font-extrabold text-center text-gray-800">
+        Verifizierungscode
+      </h3>
       <p className="text-center text-gray-600 mb-4">
-        Bitte geben Sie den Code ein, den wir an <span className="font-semibold">{email}</span> gesendet haben.
+        Bitte geben Sie den Code ein, den wir an{" "}
+        <span className="font-semibold">{email}</span> gesendet haben.
       </p>
 
       <div className="relative">
@@ -51,14 +63,18 @@ const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, ema
           name="code"
           placeholder="Verifizierungscode"
           className={`w-full px-4 py-3 border rounded-lg text-black focus:outline-none transition-all duration-300 ${
-            formik.touched.code && formik.errors.code ? "border-red-500" : "border-gray-300 focus:border-blue-500"
+            formik.touched.code && formik.errors.code
+              ? "border-red-500"
+              : "border-gray-300 focus:border-blue-500"
           }`}
           value={formik.values.code}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
         {formik.touched.code && formik.errors.code && (
-          <p className="text-red-500 text-sm absolute left-0 top-full mt-1">{formik.errors.code}</p>
+          <p className="text-red-500 text-sm absolute left-0 top-full mt-1">
+            {formik.errors.code}
+          </p>
         )}
       </div>
 
@@ -69,9 +85,23 @@ const VerificationCode: React.FC<VerificationCodeFormProps> = ({ onNextStep, ema
       >
         {isSubmitting ? (
           <span className="flex items-center">
-            <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0h-4a4 4 0 00-8 0H4z" />
+            <svg
+              className="animate-spin h-5 w-5 mr-2 text-white"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 0116 0h-4a4 4 0 00-8 0H4z"
+              />
             </svg>
             Wird überprüft...
           </span>

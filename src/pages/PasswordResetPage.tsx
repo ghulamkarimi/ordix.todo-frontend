@@ -16,10 +16,7 @@ const PasswordResetPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center transition-all duration-500"
-   
-    >
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center transition-all duration-500">
       <div
         className={`bg-white/90 p-8 rounded-xl shadow-2xl w-full max-w-lg transform transition-all duration-500 ${
           step === 3 ? "scale-105" : "scale-100"
@@ -31,7 +28,9 @@ const PasswordResetPage = () => {
             alt="Logo"
             className="w-20 h-20 mb-4 rounded-full shadow-lg hover:scale-110 transition-all duration-300"
           />
-          <h1 className="text-4xl font-extrabold text-gray-800">Passwort zurücksetzen</h1>
+          <h1 className="text-4xl font-extrabold text-gray-800">
+            Passwort zurücksetzen
+          </h1>
         </div>
 
         <div className="flex justify-between items-center mb-8">
@@ -39,7 +38,9 @@ const PasswordResetPage = () => {
             <div key={index} className="text-center flex-1 transition-all">
               <div
                 className={`w-10 h-10 rounded-full mx-auto transition-all duration-500 ${
-                  step >= index + 1 ? "bg-green-500 text-white" : "bg-gray-300 text-gray-500"
+                  step >= index + 1
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-300 text-gray-500"
                 } flex items-center justify-center`}
               >
                 {index + 1}
@@ -63,7 +64,11 @@ const PasswordResetPage = () => {
           }}
         >
           {step === 1 && (
-            <EmailForm onNextStep={() => setStep(2)} setEmail={setEmail} className="transition-all" />
+            <EmailForm
+              onNextStep={() => setStep(2)}
+              setEmail={setEmail}
+              className="transition-all"
+            />
           )}
           {step === 2 && (
             <VerificationCode

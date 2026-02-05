@@ -5,30 +5,29 @@ import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
 import PasswordResetPage from "@/pages/PasswordResetPage";
 
- const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          index: true,
-          element: <HomePage />,
-        },
-        {
-          path: "/register",
-          element: <RegisterPage />,
-        },
-        {
-          path: "/login",
-          element: <LoginPage />,
-        },
-        {
-          path: "/reset-password",
-          element: <PasswordResetPage />,
-        }
-      ],
-    }
-  ]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/reset-password",
+        element: <PasswordResetPage />,
+      },
+    ],
+  },
+]);
 
-  export default router; 
-  
+export default router;

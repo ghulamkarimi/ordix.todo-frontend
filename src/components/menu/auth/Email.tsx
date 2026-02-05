@@ -26,12 +26,16 @@ const EmailForm: React.FC<EmailFormProps> = ({ onNextStep, setEmail }) => {
     onSubmit: async (values) => {
       try {
         // API-Aufruf, um den OTP zu senden
-        await dispatch(requestPasswordResetApi({ email: values.email })).unwrap();
+        await dispatch(
+          requestPasswordResetApi({ email: values.email }),
+        ).unwrap();
         NotificationService.success("OTP wurde an Ihre E-Mail gesendet!");
         setEmail(values.email); // E-Mail speichern
         onNextStep(); // Zum nächsten Schritt wechseln
       } catch (error: any) {
-        NotificationService.error(error.message || "Fehler beim Senden des OTP.");
+        NotificationService.error(
+          error.message || "Fehler beim Senden des OTP.",
+        );
       }
     },
   });
@@ -40,14 +44,17 @@ const EmailForm: React.FC<EmailFormProps> = ({ onNextStep, setEmail }) => {
     <form onSubmit={formik.handleSubmit} className="space-y-6">
       <h3 className="text-xl font-bold mb-4 text-center">Passwort vergessen</h3>
       <p className="">
-        Geben Sie Ihre registrierte E-Mail-Adresse ein, um einen Bestätigungscode zu erhalten.
+        Geben Sie Ihre registrierte E-Mail-Adresse ein, um einen
+        Bestätigungscode zu erhalten.
       </p>
       <input
         type="email"
         name="email"
         placeholder="E-Mail-Adresse"
         className={`w-full px-4 py-3 border rounded-lg ${
-          formik.touched.email && formik.errors.email ? "border-red-500" : "border-gray-300"
+          formik.touched.email && formik.errors.email
+            ? "border-red-500"
+            : "border-gray-300"
         }`}
         value={formik.values.email}
         onChange={formik.handleChange}
@@ -56,7 +63,10 @@ const EmailForm: React.FC<EmailFormProps> = ({ onNextStep, setEmail }) => {
       {formik.touched.email && formik.errors.email && (
         <p className="text-red-500 text-sm">{formik.errors.email}</p>
       )}
-      <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white py-2 rounded-lg"
+      >
         OTP senden
       </button>
     </form>

@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '@/store'; // Stelle sicher, dass RootState korrekt importiert ist
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "@/store"; // Stelle sicher, dass RootState korrekt importiert ist
 
 interface IAppState {
   isSidebarOpen: boolean;
@@ -12,7 +12,7 @@ const initialState: IAppState = {
 };
 
 const appSlice = createSlice({
-  name: 'app',
+  name: "app",
   initialState,
   reducers: {
     toggleSidebar: (state) => {
@@ -25,6 +25,7 @@ const appSlice = createSlice({
 });
 
 export const { toggleSidebar, toggleDarkMode } = appSlice.actions;
-export const selectIsSidebarOpen = (state: RootState) => state.app.isSidebarOpen;
+export const selectIsSidebarOpen = (state: RootState) =>
+  state.app.isSidebarOpen;
 
 export default appSlice.reducer;

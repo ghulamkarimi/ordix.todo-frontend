@@ -5,6 +5,6 @@ const MaxWithWrapper = () => {
       <p>MaxWithWrapper</p>
     </div>
   );
-}
+};
 
 export default MaxWithWrapper;

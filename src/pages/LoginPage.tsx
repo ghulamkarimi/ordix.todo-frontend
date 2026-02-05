@@ -10,23 +10,24 @@ import { AppDispatch } from "@/store";
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const regexPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.]).{6,}$/;
 
-
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .matches(regexEmail, "Ungültige E-Mail-Adresse")
     .email("Ungültige E-Mail")
     .required("E-Mail ist erforderlich"),
   password: Yup.string()
-    .matches(regexPassword, "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten")
+    .matches(
+      regexPassword,
+      "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten",
+    )
     .min(6, "Mindestens 6 Zeichen")
     .required("Passwort ist erforderlich"),
 });
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
 
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
@@ -68,27 +69,27 @@ const LoginPage = () => {
               </div>
 
               <div>
-          <label htmlFor="password">Passwort</label>
-          <div className="relative">
-            <Field
-              name="password"
-              type={showPassword ? "text" : "password"}
-              className="w-full p-2 border rounded"
-            />
-            <button
-              type="button"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-          <ErrorMessage
-            name="password"
-            component="div"
-            className="text-red-500 text-sm"
-          />
-          </div>
+                <label htmlFor="password">Passwort</label>
+                <div className="relative">
+                  <Field
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    className="w-full p-2 border rounded"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
 
               <button
                 type="submit"
@@ -108,19 +109,16 @@ const LoginPage = () => {
           Passwort vergessen
         </button>
         <div className="flex w-full items-center justify-center">
-            <div className="border border-b-2 w-full border-gray-300" />
-            <h1 className=" mx-1.5 text-3xl font-semibold text-center">
-              oder
-            </h1>
-            <div className="border border-b-2 w-full border-gray-300" />
-          </div>
+          <div className="border border-b-2 w-full border-gray-300" />
+          <h1 className=" mx-1.5 text-3xl font-semibold text-center">oder</h1>
+          <div className="border border-b-2 w-full border-gray-300" />
+        </div>
         <button
           className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition my-2"
           onClick={() => navigate("/register")}
         >
           Registrieren
         </button>
-      
       </div>
     </div>
   );

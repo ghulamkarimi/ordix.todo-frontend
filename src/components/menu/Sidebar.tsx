@@ -1,12 +1,17 @@
-import { checkSessionAPi, selectedIsAuthenticated, selectUser, userLogoutApi } from '@/feature/userSlice';
-import { toggleSidebar, selectIsSidebarOpen } from '@/feature/appSlice';
-import { AppDispatch, useAppSelector } from '@/store';
-import { Menu, ChevronRight, List, Plus, LogOut, Circle } from 'lucide-react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { displayTasks } from '@/feature/taskSlice';
+import {
+  checkSessionAPi,
+  selectedIsAuthenticated,
+  selectUser,
+  userLogoutApi,
+} from "@/feature/userSlice";
+import { toggleSidebar, selectIsSidebarOpen } from "@/feature/appSlice";
+import { AppDispatch, useAppSelector } from "@/store";
+import { Menu, ChevronRight, List, Plus, LogOut, Circle } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { displayTasks } from "@/feature/taskSlice";
 
 const Sidebar = () => {
   const isAuthenticated = useAppSelector(selectedIsAuthenticated);
@@ -15,16 +20,15 @@ const Sidebar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const tasks = useSelector(displayTasks);
-     
 
   const handleLogout = async () => {
     try {
       const response = await dispatch(userLogoutApi()).unwrap();
-      localStorage.removeItem('userId');
-      toast.success(response.message || 'Erfolgreich abgemeldet');
-      navigate('/login');
+      localStorage.removeItem("userId");
+      toast.success(response.message || "Erfolgreich abgemeldet");
+      navigate("/login");
     } catch (error: any) {
-      toast.error(error || 'Abmelden fehlgeschlagen');
+      toast.error(error || "Abmelden fehlgeschlagen");
     }
   };
 
@@ -47,23 +51,23 @@ const Sidebar = () => {
     <>
       {/* Backdrop for mobile when sidebar is open */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-10 md:hidden"
           onClick={handleToggleSidebar}
         />
       )}
-      
+
       <div
         className={`min-h-screen bg-white shadow-lg flex flex-col p-1 md:p-4 transition-all duration-300 ease-in-out fixed md:static z-20 ${
-          isSidebarOpen ? 'w-40 md:w-64' : 'w-10 md:w-64'
+          isSidebarOpen ? "w-40 md:w-64" : "w-10 md:w-64"
         }`}
       >
         <div>
           {/* Menü-Header */}
           <div className="flex justify-between items-center mb-6">
             {isSidebarOpen && <h2 className="text-xl font-bold">MENÜ</h2>}
-            <button 
-              className="text-gray-600 md:hidden" 
+            <button
+              className="text-gray-600 md:hidden"
               onClick={handleToggleSidebar}
             >
               <Menu className="w-6 h-6" />
@@ -84,17 +88,19 @@ const Sidebar = () => {
           {/* Aufgaben-Bereich */}
           {(isSidebarOpen || window.innerWidth >= 768) && (
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-500 mb-2">AUFGABEN</h3>
+              <h3 className="text-sm font-semibold text-gray-500 mb-2">
+                AUFGABEN
+              </h3>
               <ul>
-                <li 
+                <li
                   className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
                   <div className="flex items-center justify-between w-full">
-                 <div>
-                 <ChevronRight className="w-5 h-5 mr-2 text-gray-600" />
-                 <span>Anstehend</span>
-                 </div>
+                    <div>
+                      <ChevronRight className="w-5 h-5 mr-2 text-gray-600" />
+                      <span>Anstehend</span>
+                    </div>
                     <div>
                       <span className="ml-2 text-xs bg-blue-200 text-blue-800 rounded-full px-2 py-1">
                         {tasks.filter((task) => !task.is_completed).length}
@@ -102,7 +108,7 @@ const Sidebar = () => {
                     </div>
                   </div>
                 </li>
-                <li 
+                <li
                   className="flex justify-between items-center p-2 bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
@@ -118,9 +124,11 @@ const Sidebar = () => {
           {/* Listen-Bereich */}
           {(isSidebarOpen || window.innerWidth >= 768) && (
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-500 mb-2">LISTEN</h3>
+              <h3 className="text-sm font-semibold text-gray-500 mb-2">
+                LISTEN
+              </h3>
               <ul>
-                <li 
+                <li
                   className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
@@ -129,7 +137,7 @@ const Sidebar = () => {
                     <span>Persönlich</span>
                   </div>
                 </li>
-                <li 
+                <li
                   className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
@@ -138,7 +146,7 @@ const Sidebar = () => {
                     <span>Arbeit</span>
                   </div>
                 </li>
-                <li 
+                <li
                   className="flex justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
@@ -147,7 +155,7 @@ const Sidebar = () => {
                     <span>Liste 1</span>
                   </div>
                 </li>
-                <li 
+                <li
                   className="flex items-center p-2 hover:bg-gray-100 rounded-lg"
                   onClick={handleItemClick}
                 >
@@ -188,21 +196,18 @@ const Sidebar = () => {
                     </li>
                   )}
                 </>
-              ) : (
-                (isSidebarOpen || window.innerWidth >= 768) ? (
-                  <li
-                    className="flex items-center p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-                    onClick={() => {
-                      navigate('/login');
-                      handleItemClick();
-                    }}
-                  >
-                    <LogOut className="w-5 h-5 mr-2 text-gray-600" />
-                    <span
-                    >Anmelden</span>
-                  </li>
-                ) : null
-              )}
+              ) : isSidebarOpen || window.innerWidth >= 768 ? (
+                <li
+                  className="flex items-center p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                    handleItemClick();
+                  }}
+                >
+                  <LogOut className="w-5 h-5 mr-2 text-gray-600" />
+                  <span>Anmelden</span>
+                </li>
+              ) : null}
             </ul>
           </div>
         </div>

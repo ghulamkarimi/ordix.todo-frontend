@@ -14,14 +14,17 @@ interface ChangePasswordProps {
   className?: string;
 }
 
-const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className }) => {
+const ChangePassword: React.FC<ChangePasswordProps> = ({
+  email,
+  code,
+  className,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const [showNewPassword, setShowNewPassword] = useState(false); // Für neues Passwort
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Für Passwort-Bestätigung
   const regexPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.]).{6,}$/;
-
 
   const formik = useFormik({
     initialValues: {
@@ -33,14 +36,17 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className 
         .min(6, "Mindestens 6 Zeichen")
         .matches(
           regexPassword,
-          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten"
+          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten",
         )
         .required("Passwort ist erforderlich"),
       confirm_password: Yup.string()
-        .oneOf([Yup.ref("new_password"), undefined], "Passwörter müssen übereinstimmen")
+        .oneOf(
+          [Yup.ref("new_password"), undefined],
+          "Passwörter müssen übereinstimmen",
+        )
         .matches(
           regexPassword,
-          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten"
+          "Passwort muss mindestens 6 Zeichen lang sein und mindestens 1 Zahl enthalten",
         )
         .required("Passwort-Bestätigung ist erforderlich"),
     }),
@@ -52,13 +58,15 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className 
             email,
             code,
             newPassword: values.new_password,
-          })
+          }),
         ).unwrap();
 
         NotificationService.success("Passwort erfolgreich geändert");
         setTimeout(() => navigate("/login"), 1000); // Nach Erfolg zur Login-Seite nach 1 Sekunde
       } catch (error: any) {
-        NotificationService.error(error || "Fehler beim Zurücksetzen des Passworts");
+        NotificationService.error(
+          error || "Fehler beim Zurücksetzen des Passworts",
+        );
       } finally {
         setIsSubmitting(false);
       }
@@ -66,7 +74,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className 
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={`space-y-6 ${className || ""}`}>
+    <form
+      onSubmit={formik.handleSubmit}
+      className={`space-y-6 ${className || ""}`}
+    >
       <h3 className="text-2xl font-extrabold text-center text-gray-800">
         Neues Passwort festlegen
       </h3>
@@ -134,9 +145,23 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ email, code, className 
       >
         {isSubmitting ? (
           <span className="flex items-center">
-            <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0h-4a4 4 0 00-8 0H4z" />
+            <svg
+              className="animate-spin h-5 w-5 mr-2 text-white"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 0116 0h-4a4 4 0 00-8 0H4z"
+              />
             </svg>
             Wird gespeichert...
           </span>
