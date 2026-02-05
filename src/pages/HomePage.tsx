@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const HomePage = () => {
-  // Tasks und Status aus dem Redux-Store abrufen
   const tasks = useSelector(displayTasks);
   const taskStatus = useSelector((state: RootState) => state.task.status);
   const taskError = useSelector((state: RootState) => state.task.error);
