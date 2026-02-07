@@ -29,19 +29,20 @@ const userAdapter = createEntityAdapter<IUser, number>({
 });
 
 // Bestehende Thunks
-export const getUsersApi = createAsyncThunk("user/getUsersApi", async (_, { rejectWithValue }) => {
-  try {
-    const response = await getUsers();
-    console.log("users", response.data);
-    return response.data;
-  } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+export const getUsersApi = createAsyncThunk(
+  "user/getUsersApi",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getUsers();
+      console.log("users", response.data);
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
-});
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
+  },
+);
 
 export const userRegisterApi = createAsyncThunk(
   "user/register",
@@ -50,22 +51,17 @@ export const userRegisterApi = createAsyncThunk(
       const response = await userRegister(user);
       return { user: response.data, message: response.data.message };
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
-
-
-
 export const userLoginApi = createAsyncThunk<
-  { user: unknown; message: string }, 
-  TUser,                            
-  { rejectValue: string }              
+  { user: unknown; message: string },
+  TUser,
+  { rejectValue: string }
 >("user/login", async (user, { rejectWithValue }) => {
   try {
     const response = await userLogin(user);
@@ -73,12 +69,9 @@ export const userLoginApi = createAsyncThunk<
   } catch (error: unknown) {
     const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
+    return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
   }
 });
-
 
 export const requestPasswordResetApi = createAsyncThunk(
   "user/requestPasswordResetApi",
@@ -88,12 +81,10 @@ export const requestPasswordResetApi = createAsyncThunk(
       console.log("requestPasswordResetApi", response.data);
       return { message: response.data.message };
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
@@ -107,12 +98,10 @@ export const verifyResetCodeApi = createAsyncThunk(
       const response = await verifyResetCode({ email, code });
       return response.data;
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
@@ -130,12 +119,10 @@ export const resetPasswordApi = createAsyncThunk(
       const response = await resetPassword({ email, code, newPassword });
       return response.data;
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
@@ -146,12 +133,10 @@ export const checkSessionAPi = createAsyncThunk(
       const response = await getCurrentUser();
       return response.data.user;
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
@@ -162,12 +147,10 @@ export const getCurrentUserApi = createAsyncThunk(
       const response = await getCurrentUser();
       return response.data.user;
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
@@ -178,12 +161,10 @@ export const userLogoutApi = createAsyncThunk(
       const response = await userLogout();
       return { message: response.data.message };
     } catch (error: unknown) {
-    const err = error as AxiosError<{ error?: string }>;
+      const err = error as AxiosError<{ error?: string }>;
 
-    return rejectWithValue(
-      err.response?.data?.error ?? "Unbekannter Fehler",
-    );
-  }
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
   },
 );
 
