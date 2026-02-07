@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "@/store"; // Stelle sicher, dass RootState korrekt importiert ist
+import { RootState } from "@/store"; 
 
 interface IAppState {
   isSidebarOpen: boolean;
