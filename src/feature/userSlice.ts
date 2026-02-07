@@ -1,4 +1,5 @@
 import { IUser, TUser } from "@/interface";
+import type { AxiosError } from "axios";
 import {
   getCurrentUser,
   getUsers,
@@ -28,16 +29,20 @@ const userAdapter = createEntityAdapter<IUser, number>({
 });
 
 // Bestehende Thunks
-export const getUsersApi = createAsyncThunk("user/getUsersApi", async () => {
-  try {
-    const response = await getUsers();
-    console.log("users", response.data);
-    return response.data;
-  } catch (error: any) {
-    console.error("Error fetching users:", error);
-    throw error;
-  }
-});
+export const getUsersApi = createAsyncThunk(
+  "user/getUsersApi",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getUsers();
+      console.log("users", response.data);
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+    }
+  },
+);
 
 export const userRegisterApi = createAsyncThunk(
   "user/register",
@@ -45,27 +50,28 @@ export const userRegisterApi = createAsyncThunk(
     try {
       const response = await userRegister(user);
       return { user: response.data, message: response.data.message };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
 
-export const userLoginApi = createAsyncThunk(
-  "user/login",
-  async (user: TUser, { rejectWithValue }) => {
-    try {
-      const response = await userLogin(user);
-      return { user: response.data.user, message: response.data.message };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
-    }
-  },
-);
+export const userLoginApi = createAsyncThunk<
+  { user: unknown; message: string },
+  TUser,
+  { rejectValue: string }
+>("user/login", async (user, { rejectWithValue }) => {
+  try {
+    const response = await userLogin(user);
+    return { user: response.data.user, message: response.data.message };
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ error?: string }>;
+
+    return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
+  }
+});
 
 export const requestPasswordResetApi = createAsyncThunk(
   "user/requestPasswordResetApi",
@@ -74,10 +80,10 @@ export const requestPasswordResetApi = createAsyncThunk(
       const response = await requestPasswordReset(user);
       console.log("requestPasswordResetApi", response.data);
       return { message: response.data.message };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -91,10 +97,10 @@ export const verifyResetCodeApi = createAsyncThunk(
     try {
       const response = await verifyResetCode({ email, code });
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Fehler beim Überprüfen des Codes.",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -112,11 +118,10 @@ export const resetPasswordApi = createAsyncThunk(
     try {
       const response = await resetPassword({ email, code, newPassword });
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error ||
-          "Fehler beim Zurücksetzen des Passworts.",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -127,10 +132,10 @@ export const checkSessionAPi = createAsyncThunk(
     try {
       const response = await getCurrentUser();
       return response.data.user;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -141,10 +146,10 @@ export const getCurrentUserApi = createAsyncThunk(
     try {
       const response = await getCurrentUser();
       return response.data.user;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -155,10 +160,10 @@ export const userLogoutApi = createAsyncThunk(
     try {
       const response = await userLogout();
       return { message: response.data.message };
-    } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.error || "Unbekannter Fehler",
-      );
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ error?: string }>;
+
+      return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
     }
   },
 );
@@ -181,7 +186,7 @@ const userSlice = createSlice({
       })
       .addCase(userRegisterApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload.user;
+        state.user = action.payload.user as IUser;
       })
       .addCase(userRegisterApi.rejected, (state, action) => {
         state.status = "failed";
@@ -189,7 +194,7 @@ const userSlice = createSlice({
       })
       .addCase(userLoginApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload.user;
+        state.user = action.payload.user as IUser;
         state.error = null;
       })
       .addCase(getCurrentUserApi.fulfilled, (state, action) => {
