@@ -19,8 +19,6 @@ const App = () => {
   return (
     <div className="min-h-screen flex">
       <Sidebar />
-
-      {/* Hier wird die aktuelle Seite gerendert */}
       <main className="flex-1 p-4">
         <Outlet />
       </main>
