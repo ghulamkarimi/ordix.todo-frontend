@@ -59,16 +59,19 @@ export const userRegisterApi = createAsyncThunk(
 );
 
 export const userLoginApi = createAsyncThunk<
-  { user: unknown; message: string },
+  { user: IUser; message: string }, // Hier stand vorher 'unknown', jetzt 'IUser'
   TUser,
   { rejectValue: string }
 >("user/login", async (user, { rejectWithValue }) => {
   try {
     const response = await userLogin(user);
-    return { user: response.data.user, message: response.data.message };
+    // Wir geben das User-Objekt explizit als IUser zurück
+    return { 
+      user: response.data.user as IUser, 
+      message: response.data.message 
+    };
   } catch (error: unknown) {
     const err = error as AxiosError<{ error?: string }>;
-
     return rejectWithValue(err.response?.data?.error ?? "Unbekannter Fehler");
   }
 });
